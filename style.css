@@ -1,0 +1,184 @@
+/* Custom Fonts */
+@font-face {
+    font-family: amir;
+    src: url(./amir.woff);
+}
+@font-face {
+    font-family: amir2;
+    src: url(./amir2.woff);
+}
+@font-face {
+    font-family: homa;
+    src: url(./Far_Homa.woff);
+}
+
+/* Base Styles (Tailwind handles most resets, but keeping this for specific overrides) */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Applying Vazirmatn globally for Persian text, Inter for general/English */
+/* This will be mostly handled by inline <style> in index.html for Tailwind JIT,
+   but good to keep here for explicit font imports */
+body {
+    font-family: 'Vazirmatn', sans-serif;
+}
+.font-inter {
+    font-family: 'Inter', sans-serif;
+}
+
+/* Specific styling for the logo image in the footer */
+#logof {
+  width: 150px; /* Original size */
+  height: 150px; /* Original size */
+  border-radius: 50%; /* Make it perfectly round */
+  object-fit: cover; /* Ensure image covers the area without distortion */
+  box-shadow: 0 8px 16px rgba(0,0,0,0.2); /* Add a subtle shadow */
+}
+
+/* Telegram and Instagram icons - ensure they are round and styled */
+#tme, #insta {
+  color: #000000; /* Original color, though now icon is image */
+  border-radius: 50px; /* Make the container round */
+  overflow: hidden; /* Hide any overflow if image is not perfectly round */
+  display: inline-block; /* Ensure proper spacing */
+}
+
+/* Styling for images inside tme and insta links */
+#tme img, #insta img {
+  display: block; /* Remove extra space below inline images */
+}
+
+/* Shadow effect for hero text - a simple text shadow for readability over background image */
+.shadow-text {
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+/* Photo Gallery Specific Styles */
+.image-track {
+    display: flex;
+    white-space: nowrap; /* Ensures all images stay in a single line */
+    /* Animation duration can be adjusted here for speed */
+    animation: scroll-right 30s linear infinite; /* Animates the track rightwards continuously */
+}
+
+.image-track img {
+    flex-shrink: 0; /* Prevents images from shrinking within the flex container */
+    width: 300px; /* Fixed width for each image in the gallery */
+    height: 200px; /* Fixed height for each image in the gallery */
+    object-fit: cover; /* Ensures images cover their area without distortion */
+    margin-left: 1rem; /* Adds space between images in a right-to-left flow */
+}
+
+/* Keyframes for the left-to-right scrolling animation */
+/* This animation moves the image track to the right, creating a visual flow from left to right. */
+/* The value 1264px is calculated as (image_width + margin_left) * number_of_images_in_one_set */
+/* (300px + 16px) * 4 = 1264px */
+@keyframes scroll-right {
+    0% { transform: translateX(0); } /* Starts at the initial position */
+    100% { transform: translateX(1264px); } /* Moves one full set of images to the right */
+}
+
+
+/* Modal styles from original CSS (kept in case they are used elsewhere or for future features) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1000; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  padding-top: 60px;
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 5% auto; /* 5% from the top and centered */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%; /* Could be more or less, depending on screen size */
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.close-button {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close-button:hover,
+.close-button:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* Persian menu (from original CSS, kept in case it's a planned feature) */
+.persian-menu {
+   font-family: 'Vazirmatn', sans-serif;
+  background: #fff7f3;
+  direction: rtl;
+  text-align: center;
+  padding: 50px;
+  margin-bottom: 40px; /* Original margin */
+}
+
+.menu-button {
+  display: inline-block;
+  margin: 10px;
+  padding: 15px 30px;
+  background-color: #ff6f61;
+  color: white;
+  font-size: 16px;
+  border-radius: 12px;
+  text-decoration: none;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+}
+
+.menu-button:hover {
+  background-color: #e65348;
+  transform: scale(1.05);
+}
+
+#details{
+  color: #000000;
+  background-color: #888;
+  border-radius: 20px;
+}
+
+/* Custom styles for the new menu item cards */
+.menu-item-card {
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    height: 100%; /* Ensure cards in a row have equal height */
+}
+
+.menu-item-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+}
+
+.menu-item-card img {
+    border-bottom: 4px solid var(--primary-color); /* Add a subtle line under the image */
+}
+
+.menu-item-card div {
+    flex-grow: 1; /* Allows content area to take available space */
+}
+
+/* Ensure images fill their container without distortion */
+.menu-item-card img {
+    width: 100%;
+    height: 200px; /* Adjust height as needed */
+    object-fit: cover;
+}

@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CakeStore-SEVIN - کافه قنادی سوین</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* Tailwind configuration for custom colors and fonts */
+    :root {
+      --primary-color: #FF6F61; /* Original menu-button color, a warm coral */
+      --secondary-color: #FFF7F3; /* Light peach/cream, from original persian-menu */
+      --accent-color: #A7C5EB; /* Light blue for contrast */
+      --dark-text: #333333;
+      --light-text: #666666;
+    }
+
+    /* Applying Vazirmatn to all elements for Persian consistency */
+    body {
+      font-family: 'Vazirmatn', sans-serif;
+      background-color: var(--secondary-color); /* Lighter background */
+      color: var(--dark-text);
+      overflow-x: hidden; /* Prevent horizontal scroll due to animations */
+    }
+    .font-inter {
+      font-family: 'Inter', sans-serif; /* For specific English text if needed */
+    }
+
+    /* Custom utility classes from Tailwind config */
+    .bg-primary { background-color: var(--primary-color); }
+    .text-primary { color: var(--primary-color); }
+    .bg-secondary { background-color: var(--secondary-color); }
+    .border-primary { border-color: var(--primary-color); }
+
+    /* Custom styles for responsiveness and visual appeal */
+    .section-spacing {
+        padding: 3rem 1rem; /* Adjusted padding for sections */
+    }
+    @media (min-width: 768px) {
+        .section-spacing {
+            padding: 5rem 2rem;
+        }
+    }
+    @media (min-width: 1024px) {
+        .section-spacing {
+            padding: 7rem 4rem;
+        }
+    }
+    .card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+    }
+    /* Specific styles for existing elements */
+    #tme, #insta {
+        border-radius: 50%; /* Make icons perfectly round */
+        overflow: hidden;
+    }
+    #tme img, #insta img {
+        display: block; /* Remove extra space below image */
+    }
+    #logof {
+        width: 100px; /* Adjusted size for better footer look */
+        height: 100px;
+        border-radius: 50%; /* Make logo round */
+        object-fit: cover;
+    }
+    .cta-button {
+        transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+    .cta-button:hover {
+        background-color: #e65348; /* Darker primary on hover */
+        transform: scale(1.05);
+    }
+    /* Styles for Menu Buttons */
+    .menu-button-card {
+        cursor: pointer;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .menu-button-card:hover {
+        transform: scale(1.03);
+        box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    }
+    /* Custom Modal styles for responsiveness */
+    #menuModal .modal-content {
+        max-width: 90%; /* Max width on larger screens */
+        width: auto; /* Adjust width based on content */
+        max-height: 90vh; /* Max height based on viewport height */
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden; /* Hide overflow of image */
+        padding: 0; /* Remove padding to make image fill modal */
+    }
+    #menuModal .modal-content img {
+        width: 100%;
+        height: auto;
+        max-height: 80vh; /* Image itself takes up less height than modal */
+        object-fit: contain; /* Ensure image fits without cropping */
+    }
+    #menuModal .close-button {
+        position: absolute;
+        top: 10px;
+        left: 10px; /* Adjusted for RTL layout */
+        z-index: 1001; /* Ensure it's above the image */
+        font-size: 2.5rem; /* Larger for easy clicking */
+        color: white; /* White color for contrast on image */
+        background-color: rgba(0,0,0,0.5);
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    /* Testimonial Section Styles - Modified for Static Grid */
+    .testimonial-grid { /* New class for the grid container */
+        display: grid;
+        grid-template-columns: 1fr; /* Single column on small screens */
+        gap: 1.5rem; /* Spacing between cards */
+    }
+    @media (min-width: 640px) { /* sm breakpoint */
+        .testimonial-grid {
+            grid-template-columns: repeat(2, 1fr); /* Two columns on small-medium screens */
+        }
+    }
+    @media (min-width: 1024px) { /* lg breakpoint */
+        .testimonial-grid {
+            grid-template-columns: repeat(3, 1fr); /* Three columns on larger screens */
+        }
+    }
+
+    .testimonial-card {
+        /* Removed flex-shrink: 0; width; margin: 1rem; as grid handles spacing and sizing */
+        /* Basic card styling already applies */
+        padding: 1.5rem; /* Adjusted padding for better look */
+    }
+
+    /* Scroll reveal animation styles */
+    .scroll-reveal {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+    .scroll-reveal.revealed {
+        opacity: 1;
+        transform: translateY(0);
+    }
+  </style>
+</head>
+<body class="text-gray-800 antialiased">
+  <header class="bg-white shadow-lg py-4 border-b border-gray-200">
+    <div class="container mx-auto px-4 flex justify-between items-center">
+      <div class="logo text-2xl font-bold text-primary">
+        <a href="#" class="hover:text-pink-600 transition duration-300">CakeStore SEVIN</a>
+      </div>
+      <nav class="hidden md:block">
+        <ul class="flex space-x-6">
+          <li><a href="#about-us" class="text-gray-700 hover:text-primary transition duration-300">درباره ما</a></li>
+          <li><a href="#photo-gallery" class="text-gray-700 hover:text-primary transition duration-300">گالری</a></li>
+          <li><a href="#our-menus" class="text-gray-700 hover:text-primary transition duration-300">منوها</a></li>
+          <li><a href="#our-cakes" class="text-gray-700 hover:text-primary transition duration-300">کیک‌ها</a></li>
+          <li><a href="#contact" class="text-gray-700 hover:text-primary transition duration-300">تماس با ما</a></li>
+        </ul>
+      </nav>
+      <div class="cta">
+        <a href="https://t.me/Cake_Sevin" target="_blank" class="cta-button bg-primary text-white py-2 px-6 rounded-full shadow-md hover:shadow-lg">سفارش دهید</a>
+      </div>
+      <button id="mobile-menu-button" class="md:hidden text-gray-700 focus:outline-none">
+        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+      </button>
+    </div>
+  </header>
+
+  <div id="menu-overlay" class="fixed inset-0 bg-black opacity-0 transition-opacity duration-300 ease-in-out z-[1000] hidden md:hidden"></div>
+
+  <div id="mobile-menu" class="fixed top-0 right-0 h-full w-64 bg-white shadow-xl transform translate-x-full transition-transform duration-300 ease-in-out z-[1001] md:hidden">
+      <div class="flex justify-start p-4"> <button id="close-mobile-menu" class="text-gray-700 focus:outline-none">
+              <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+          </button>
+      </div>
+      <nav class="flex flex-col items-center space-y-6 pt-8">
+          <a href="#about-us" class="text-gray-700 hover:text-primary transition duration-300 text-xl">درباره ما</a>
+          <a href="#photo-gallery" class="text-gray-700 hover:text-primary transition duration-300 text-xl">گالری</a>
+          <a href="#our-menus" class="text-gray-700 hover:text-primary transition duration-300 text-xl">منوها</a>
+          <a href="#our-cakes" class="text-gray-700 hover:text-primary transition duration-300 text-xl">کیک‌ها</a>
+          <a href="#contact" class="text-gray-700 hover:text-primary transition duration-300 text-xl">تماس با ما</a>
+          <a href="https://t.me/Cake_Sevin" target="_blank" class="cta-button bg-primary text-white py-2 px-6 rounded-full shadow-md hover:shadow-lg text-lg mt-4">سفارش دهید</a>
+      </nav>
+  </div>
+
+  <section class="relative bg-gradient-to-r from-pink-300 to-red-300 text-white section-spacing flex items-center justify-center min-h-[400px] overflow-hidden">
+    <div class="absolute inset-0 bg-cover bg-center opacity-40" style="background-image: url('https://placehold.co/1920x1080/FFADAD/FFFFFF?text=Delicious+Cakes');"></div>
+    <div class="relative z-10 text-center space-y-6">
+      <h1 class="text-5xl md:text-6xl lg:text-7xl font-extrabold leading-tight shadow-text">کافه قنادی سوین</h1>
+      <br>
+      <br>
+      <br>
+      <a href="#our-cakes" class="inline-block bg-white text-primary hover:bg-gray-100 py-3 px-8 rounded-full text-lg font-semibold shadow-xl transition duration-300 ease-in-out transform hover:scale-105">کیک‌های ما را ببینید</a>
+    </div>
+  </section>
+
+  <section id="about-us" class="bg-white section-spacing scroll-reveal">
+    <div class="container mx-auto px-4 grid md:grid-cols-2 gap-12 items-center">
+      <div class="text-center md:text-right space-y-6">
+        <h2 class="text-4xl font-bold text-primary mb-4">داستان سوین</h2>
+        <p class="text-lg leading-relaxed text-gray-700">
+          ما در قنادی سوین، مجموعه‌ای از کیک‌های خوشمزه و متنوع را ارائه می‌دهیم که هر کدام با عشق و دقت فراوان، از بهترین مواد اولیه تهیه شده‌اند.
+          هدف ما این است که با هر برش کیک، لحظات شیرین و فراموش‌نشدنی را برای شما و عزیزانتان به ارمغان بیاوریم.
+          از کیک‌های کلاسیک تا مدرن، با طعم‌ها و طرح‌های منحصربه‌فرد، ما برای هر سلیقه‌ای چیزی داریم.
+        </p>
+        <p class="text-lg leading-relaxed text-gray-700">
+          با سال‌ها تجربه در صنعت شیرینی‌پزی، ما به کیفیت، تازگی و زیبایی محصولاتمان افتخار می‌کنیم.
+          هر کیک یک اثر هنری است که با دستان ماهر قنادان ما خلق می‌شود تا لبخند را بر لبان شما بنشاند.
+          منتظر سفارشات شما هستیم تا طعم جادویی کیک‌های سوین را تجربه کنید!
+        </p>
+      </div>
+      <div class="flex justify-center md:justify-start">
+        <img src="./12.jpg" alt="A baker decorating a cake" class="rounded-lg shadow-xl w-full max-w-md md:max-w-none transform hover:scale-105 transition duration-300 ease-in-out">
+      </div>
+    </div>
+  </section>
+
+  <section id="photo-gallery" class="bg-secondary section-spacing scroll-reveal">
+      <div class="container mx-auto px-4 text-center">
+          <h2 class="text-4xl font-bold text-primary mb-12">گالری کیک‌های سوین</h2>
+          <div class="relative w-full overflow-hidden py-4">
+              <div class="image-track">
+                  <img src="./2.jpg" alt="Cake Design 1" class="rounded-lg shadow-md">
+                  <img src="./8.jpg" alt="Cake Design 2" class="rounded-lg shadow-md">
+                  <img src="./7.jpg" alt="Cake Design 3" class="rounded-lg shadow-md">
+                  <img src="./15.jpg" alt="Cake Design 4" class="rounded-lg shadow-md">
+                  <img src="./17.jpg" alt="Cake Design 1" class="rounded-lg shadow-md">
+                  <img src="./27.jpg" alt="Cake Design 2" class="rounded-lg shadow-md">
+                  <img src="./23.jpg" alt="Cake Design 3" class="rounded-lg shadow-md">
+                  <img src="./20.jpg" alt="Cake Design 4" class="rounded-lg shadow-md">
+              </div>
+          </div>
+      </div>
+  </section>
+
+  <section id="our-menus" class="bg-white section-spacing scroll-reveal">
+    <div class="container mx-auto px-4 text-center">
+        <h2 class="text-4xl font-bold text-primary mb-12">منوهای سوین</h2>
+
+        <div id="menu-cover" class="menu-item-card bg-secondary rounded-lg shadow-md overflow-hidden mx-auto max-w-md cursor-pointer"
+             onclick="showFullMenu()"
+             role="button" aria-label="مشاهده ی منو ها">
+            <img src="./cover.jpg" alt="تصویر کاور منوها" class="w-full h-64 object-cover">
+            <div class="p-6 text-right">
+                <h3 class="text-2xl font-semibold mb-2 text-primary">مشاهده کامل منوها</h3>
+                <p class="text-gray-700">برای دیدن تمامی منوهای کیک و کافه، اینجا کلیک کنید.</p>
+            </div>
+        </div>
+
+        <div id="full-menu-options" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 hidden">
+            
+            <div class="menu-item-card bg-secondary rounded-lg shadow-md overflow-hidden"
+                 onclick="openMenuModal('./menu2.jpg')"
+                 role="button" aria-label="مشاهده ی منو کیک ها">
+                <img src="./cover.jpg" alt="تصویر منوی کیک‌ها" class="w-full h-48 object-cover">
+                <div class="p-6 text-right">
+                    <h3 class="text-2xl font-semibold mb-2 text-primary">مشاهده ی منو کیک ها</h3>
+                    <p class="text-gray-700">مجموعه‌ای کامل از کیک‌های مجلسی و تولد.</p>
+                </div>
+            </div>
+
+            <div class="menu-item-card bg-secondary rounded-lg shadow-md overflow-hidden"
+                 onclick="openMenuModal('./menu1.jpg')"
+                 role="button" aria-label="کاپ کیک هامون">
+                <img src="./cover.jpg" alt="تصویر منوی کاپ کیک‌ها" class="w-full h-48 object-cover">
+                <div class="p-6 text-right">
+                    <h3 class="text-2xl font-semibold mb-2 text-primary">کاپ کیک هامون</h3>
+                    <p class="text-gray-700">کاپ‌کیک‌های متنوع برای هر سلیقه‌ای.</p>
+                </div>
+            </div>
+
+            <div class="menu-item-card bg-secondary rounded-lg shadow-md overflow-hidden"
+                 onclick="openMenuModal('./menu3.webp')"
+                 role="button" aria-label="کیک کافه ای پارت یک">
+                <img src="./cover.jpg" alt="تصویر منوی کیک کافه‌ای ۱" class="w-full h-48 object-cover">
+                <div class="p-6 text-right">
+                    <h3 class="text-2xl font-semibold mb-2 text-primary">کیک کافه ای پارت یک</h3>
+                    <p class="text-gray-700">مجموعه اول از کیک‌های مخصوص کافه.</p>
+                </div>
+            </div>
+
+            <div class="menu-item-card bg-secondary rounded-lg shadow-md overflow-hidden"
+                 onclick="openMenuModal('./menu5.webp')"
+                 role="button" aria-label="کیک کافه ای پارت دو">
+                <img src="./cover.jpg" alt="تصویر منوی کیک کافه‌ای ۲" class="w-full h-48 object-cover">
+                <div class="p-6 text-right">
+                    <h3 class="text-2xl font-semibold mb-2 text-primary">کیک کافه ای پارت دو</h3>
+                    <p class="text-gray-700">ادامه کیک‌های خاص کافه سوین.</p>
+                </div>
+            </div>
+
+            <div class="menu-item-card bg-secondary rounded-lg shadow-md overflow-hidden"
+                 onclick="openMenuModal('./menu4.webp')"
+                 role="button" aria-label="کوکی و جار کیک">
+                <img src="./cover.jpg" alt="تصویر منوی کوکی و جار کیک" class="w-full h-48 object-cover">
+                <div class="p-6 text-right">
+                    <h3 class="text-2xl font-semibold mb-2 text-primary">کوکی و جار کیک</h3>
+                    <p class="text-gray-700">کوکی‌های تازه و جارکیک‌های خوشمزه.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+  <section id="our-cakes" class="bg-secondary section-spacing scroll-reveal">
+    <div class="container mx-auto px-4 text-center">
+      <h2 class="text-4xl font-bold text-primary mb-12">کیک‌های خوشمزه ما</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div class="card bg-white rounded-lg shadow-md overflow-hidden text-right">
+          <img src="./27.jpg" alt="Chocolate Cake" class="w-full h-48 object-cover">
+          <div class="p-6">
+            <h3 class="text-2xl font-semibold mb-2">کیک شکلاتی کلاسیک</h3>
+            <p class="text-gray-600 mb-4">کیک شکلاتی غنی با گاناش ابریشمی و تزئینات بی‌نظیر.</p>
+            <span class="block text-xl font-bold text-primary">CODE #115</span>
+          </div>
+        </div>
+        <div class="card bg-white rounded-lg shadow-md overflow-hidden text-right">
+          <img src="./7.jpg" alt="Vanilla Cake" class="w-full h-48 object-cover">
+          <div class="p-6">
+            <h3 class="text-2xl font-semibold mb-2">کیک وانیلی رویایی</h3>
+            <p class="text-gray-600 mb-4">طعم اصیل وانیل در کنار کرم‌پنیری سبک و دلنشین.</p>
+            <span class="block text-xl font-bold text-primary">CODE #113</span>
+          </div>
+        </div>
+        <div class="card bg-white rounded-lg shadow-md overflow-hidden text-right">
+          <img src="./23.jpg" alt="Red Velvet Cake" class="w-full h-48 object-cover">
+          <div class="p-6">
+            <h3 class="text-2xl font-semibold mb-2">ردولوت مخملی</h3>
+            <p class="text-gray-600 mb-4">کیکی با رنگ و طعم خاص، همراه با فراستینگ پنیر خامه‌ای.</p>
+            <span class="block text-xl font-bold text-primary">CODE #112</span>
+          </div>
+        </div>
+        <div class="card bg-white rounded-lg shadow-md overflow-hidden text-right">
+            <img src="./11.jpg" alt="Fruit Cake" class="w-full h-48 object-cover">
+            <div class="p-6">
+                <h3 class="text-2xl font-semibold mb-2">کیک میوه‌ای فانتزی</h3>
+                <p class="text-gray-600 mb-4">ترکیبی تازه از میوه‌های فصل با کیک اسفنجی سبک.</p>
+                <span class="block text-xl font-bold text-primary">CODE #110</span>
+            </div>
+        </div>
+        <div class="card bg-white rounded-lg shadow-md overflow-hidden text-right">
+            <img src="./29.jpg" alt="Lemon Cake" class="w-full h-48 object-cover">
+            <div class="p-6">
+                <h3 class="text-2xl font-semibold mb-2">کیک لیمویی تازه‌کننده</h3>
+                <p class="text-gray-600 mb-4">طعم ترش و شیرین لیمو با خمیر لطیف کیک.</p>
+                <span class="block text-xl font-bold text-primary">CODE #109</span>
+            </div>
+        </div>
+        <div class="card bg-white rounded-lg shadow-md overflow-hidden text-right">
+            <img src="./100.webp" alt="Coffee Cake" class="w-full h-48 object-cover">
+            <div class="p-6">
+                <h3 class="text-2xl font-semibold mb-2">کیک قهوه و گردو</h3>
+                <p class="text-gray-600 mb-4">عطر دلنشین قهوه و بافت ترد گردو در یک کیک عالی.</p>
+                <span class="block text-xl font-bold text-primary">CODE #108</span>
+            </div>
+        </div>
+      </div>
+      <a href="https://t.me/Cake_Sevin" target="_blank" class="inline-block bg-primary text-white py-3 px-8 rounded-full text-lg font-semibold shadow-xl mt-12 hover:bg-pink-600 transition duration-300 ease-in-out transform hover:scale-105">سفارش کیک مورد علاقه شما</a>
+    </div>
+  </section>
+
+
+    <section id="testimonials" class="bg-white section-spacing scroll-reveal">
+    <div class="container mx-auto px-4 text-center">
+      <h2 class="text-4xl font-bold text-primary mb-12">آنچه مشتریان ما می‌گویند</h2>
+      <div class="testimonial-grid"> <div class="testimonial-card bg-secondary rounded-lg shadow-md p-6 text-right">
+          <div class="flex justify-end mb-3">
+            <span class="text-yellow-400 text-2xl">★★★★★</span> </div>
+          <p class="text-gray-700 leading-relaxed mb-4">
+            "کیک تولدی که سفارش دادم بی‌نظیر بود! هم ظاهرش زیبا بود و هم طعمش فوق‌العاده. همه مهمان‌ها تعریف کردند."
+          </p>
+          <p class="font-semibold text-primary">- محمد جواد سهرابی</p>
+        </div>
+        <div class="testimonial-card bg-secondary rounded-lg shadow-md p-6 text-right">
+          <div class="flex justify-end mb-3">
+            <span class="text-yellow-400 text-2xl">★★★★☆</span> </div>
+          <p class="text-gray-700 leading-relaxed mb-4">
+            "کاپ‌کیک‌هاشون واقعاً تازه و خوشمزه بود. برای دورهمی خانوادگی عالی بود، همه لذت بردند."
+          </p>
+          <p class="font-semibold text-primary">- محمد رضایی</p>
+        </div>
+        <div class="testimonial-card bg-secondary rounded-lg shadow-md p-6 text-right">
+          <div class="flex justify-end mb-3">
+            <span class="text-yellow-400 text-2xl">★★★★★</span> </div>
+          <p class="text-gray-700 leading-relaxed mb-4">
+            "منوی کیک‌های کافه‌ای واقعاً متنوع و جذابه. هر بار یک طعم جدید رو امتحان می‌کنم و پشیمون نمی‌شم!"
+          </p>
+          <p class="font-semibold text-primary">- فاطمه کریمی</p>
+        </div>
+        <div class="testimonial-card bg-secondary rounded-lg shadow-md p-6 text-right">
+          <div class="flex justify-end mb-3">
+            <span class="text-yellow-400 text-2xl">★★★★★</span> </div>
+          <p class="text-gray-700 leading-relaxed mb-4">
+            "کوکی‌هاشون عالی بود! نرم و تازه با طعمی دلنشین. حتماً دوباره سفارش می‌دم."
+          </p>
+          <p class="font-semibold text-primary">- علی حسینی</p>
+        </div>
+        <div class="testimonial-card bg-secondary rounded-lg shadow-md p-6 text-right">
+          <div class="flex justify-end mb-3">
+            <span class="text-yellow-400 text-2xl">★★★★☆</span> </div>
+          <p class="text-gray-700 leading-relaxed mb-4">
+            "ارتباط با مشتریشون خیلی خوب بود و سفارشم به موقع و با بسته‌بندی عالی به دستم رسید."
+          </p>
+          <p class="font-semibold text-primary">- ناز نوری</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer id="contact" class="bg-gray-800 text-gray-300 py-10 section-spacing scroll-reveal">
+    <div class="container mx-auto px-4 text-center md:flex md:justify-between md:items-center">
+      <div class="mb-8 md:mb-0 md:w-1/3">
+        <h3 class="text-2xl font-bold text-white mb-4">تماس با ما</h3>
+        <p class="text-md leading-relaxed mb-4">
+          خوشحال می‌شویم که به فروشگاه آنلاین کیک ما سر زدید.
+          برای سفارش کیک‌های شگفت‌انگیز و خوشمزه، لطفا پیام خود را به آیدی زیر ارسال نمایید.
+        </p>
+        <div class="flex justify-center md:justify-start space-x-6 space-x-reverse">
+          <a href="https://t.me/Cake_Sevin" target="_blank" id="tme" class="inline-block">
+            <img src="https://cdn-icons-png.flaticon.com/512/2111/2111646.png" alt="Telegram" width="40" height="40" class="hover:opacity-80 transition duration-300">
+          </a>
+          <a href="https://www.instagram.com/Cake__sevin" target="_blank" id="insta" class="inline-block">
+            <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" alt="Instagram" width="40" height="40" class="hover:opacity-80 transition duration-300">
+          </a>
+          <a href="https://wa.me/989909285169" target="_blank" class="inline-block">
+            <img src="https://cdn-icons-png.flaticon.com/512/739/739221.png" alt="WhatsApp" width="40" height="40" class="hover:opacity-80 transition duration-300">
+          </a>
+        </div>
+      </div>
+      <div class="mb-8 md:mb-0 md:w-1/3 flex justify-center">
+        <img src="./logo2.jpg" alt="our logo" id="logof" class="shadow-lg">
+      </div>
+      <div class="md:w-1/3 text-center md:text-left">
+        <h3 class="text-2xl font-bold text-white mb-4">سوین در یک نگاه</h3>
+        <ul class="space-y-2 text-md">
+          <li><a href="#about-us" class="hover:text-white transition duration-300">درباره ما</a></li>
+          <li><a href="#photo-gallery" class="hover:text-white transition duration-300">گالری</a></li>
+          <li><a href="#our-menus" class="hover:text-white transition duration-300">منوها</a></li>
+          <li><a href="#our-cakes" class="hover:text-white transition duration-300">محصولات</a></li>
+          <li><a href="#contact" class="hover:text-white transition duration-300"> تماس -> 09909285169</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="border-t border-gray-700 mt-10 pt-6 text-center text-sm text-gray-500">
+      <p>&copy; 2023 CakeStore SEVIN. تمامی حقوق محفوظ است.</p>
+    </div>
+  </footer>
+
+  <div id="menuModal" class="modal">
+    <div class="modal-content relative">
+      <span class="close-button" onclick="closeMenuModal()">&times;</span>
+      <img id="menu-modal-image" src="" alt="Menu Image" class="rounded-lg">
+    </div>
+  </div>
+
+  <script>
+    // Get the modal
+    var menuModal = document.getElementById("menuModal");
+
+    // Get the image tag inside the modal
+    var modalImage = document.getElementById("menu-modal-image");
+
+    // Function to open the modal and display the image
+    function openMenuModal(imageUrl) {
+      modalImage.src = imageUrl;
+      menuModal.style.display = "block";
+    }
+
+    // Function to close the modal
+    function closeMenuModal() {
+      menuModal.style.display = "none";
+    }
+
+    // Close the modal if the user clicks anywhere outside of the modal content
+    window.onclick = function(event) {
+      if (event.target == menuModal) {
+        menuModal.style.display = "none";
+      }
+    }
+  </script>
+  <script src="script.js"></script>
+</body>
+</html>
